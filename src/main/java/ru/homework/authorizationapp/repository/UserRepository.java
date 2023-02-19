@@ -1,26 +1,36 @@
-package authorization.repository;
+package ru.homework.authorizationapp.repository;
 
-import authorization.model.Authorities;
-import authorization.model.User;
+import ru.homework.authorizationapp.model.Authorities;
+import ru.homework.authorizationapp.model.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+
 
 
 @Repository
 public class UserRepository {
-    ConcurrentHashMap<Integer, User> repositoryUser = new ConcurrentHashMap<>();
-    AtomicInteger index;
 
-    public void addUser(@PathVariable String user, @PathVariable String password, Authorities[] authorities)
-    {
-    User newUser = new User(user,password,authorities);
-    repositoryUser.put(index.getAndIncrement(), newUser);
+    User user1 = new User("Valeriy", "11111", new Authorities[]{Authorities.READ,Authorities.WRITE});
+    User user2 = new User("Viktor", "22222", new Authorities[]{Authorities.READ,Authorities.WRITE,Authorities.DELETE});
+    User user3 = new User("Valentin", "33333", new Authorities[]{Authorities.READ});
+    ArrayList<User> repository = new ArrayList<User>(Arrays.asList(user1,user2,user3));
+
+    public ArrayList<User> addUser (@PathVariable String user, @PathVariable String password, Authorities[] authorities){
+        User userNew = new User(user, password, authorities);
+        repository.add(userNew);
+        return repository;
     }
+
     public List<Authorities> getUserAuthorities(@PathVariable String user, @PathVariable String password) {
-    return null;
+        for (User entry: repository)  {
+            if (entry.getUser().equals(user)&entry.getPassword().equals(password)) {
+                return entry.getAuthorities();
+            }
+        }
+        return new ArrayList<>();
     }
 }

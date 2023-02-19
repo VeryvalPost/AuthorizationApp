@@ -1,0 +1,30 @@
+
+worker_processes  1;
+
+error_log  logs/error.log;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        location /signin {
+            root html;
+		 index index.html;
+        }
+
+        location /authorize {
+            proxy_pass http://localhost:8080;
+        }
+
+        location /adduser {
+            proxy_pass http://localhost:8080;
+        }
+	}
+}

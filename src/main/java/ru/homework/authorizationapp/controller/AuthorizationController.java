@@ -1,11 +1,12 @@
-package authorization.controller;
+package ru.homework.authorizationapp.controller;
 
-import authorization.service.AuthorizationService;
-import authorization.model.Authorities;
+
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.homework.authorizationapp.model.Authorities;
+import ru.homework.authorizationapp.model.User;
+import ru.homework.authorizationapp.service.AuthorizationService;
 
 import java.util.List;
 
@@ -13,13 +14,17 @@ import java.util.List;
 public class AuthorizationController {
     AuthorizationService service;
 
+    public AuthorizationController(AuthorizationService service) {
+        this.service = service;
+    }
+
     @GetMapping("/authorize")
     public List<Authorities> getAuthorities(@RequestParam("user") String user, @RequestParam("password") String password) {
         return service.getAuthorities(user, password);
     }
 
-    @GetMapping("/add")
-    public void addUser(@RequestParam("user") String user, @RequestParam("password") String password, @RequestParam("authorities") Authorities[] authorities) {
-        service.addUser(user, password, authorities);
+    @GetMapping("/adduser")
+    public List<User> addUser(@RequestParam("user") String user, @RequestParam("password") String password, @RequestParam("authorities") Authorities[] authorities) {
+        return service.addUser(user, password, authorities);
     }
 }

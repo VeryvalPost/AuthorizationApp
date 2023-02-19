@@ -1,16 +1,18 @@
-package authorization.service;
+package ru.homework.authorizationapp.service;
 
-import authorization.model.Authorities;
-import authorization.exception.InvalidCredentials;
-import authorization.exception.UnauthorizedUser;
-import authorization.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import ru.homework.authorizationapp.exception.InvalidCredentials;
+import ru.homework.authorizationapp.exception.UnauthorizedUser;
+import ru.homework.authorizationapp.model.Authorities;
+import ru.homework.authorizationapp.model.User;
+import ru.homework.authorizationapp.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AuthorizationService {
-    UserRepository userRepository;
+    UserRepository userRepository = new UserRepository();
 
     public List<Authorities> getAuthorities(String user, String password) {
         if (isEmpty(user) || isEmpty(password)) {
@@ -23,11 +25,6 @@ public class AuthorizationService {
         return userAuthorities;
     }
 
-
-    public void addUser(String user, String password, Authorities[] authorities) {
-        userRepository.addUser(user,password,authorities);
-    }
-
     private boolean isEmpty(String str) {
         return str == null || str.isEmpty();
     }
@@ -35,4 +32,10 @@ public class AuthorizationService {
     private boolean isEmpty(List<?> str) {
         return str == null || str.isEmpty();
     }
+
+    public ArrayList<User> addUser (String user, String password, Authorities[] authorities) {
+        ArrayList<User> userRep =userRepository.addUser(user,password,authorities);
+        return userRep;
+    }
+
 }
